@@ -1,0 +1,5 @@
+CREATE DATABASE bank;
+CREATE SCHEMA IF NOT EXISTS stock_market_schema;
+CREATE SCHEMA IF NOT EXISTS user_schema;
+CREATE SCHEMA IF NOT EXISTS bank_schema;
+CREATE SCHEMA IF NOT EXISTS transaction_schema;

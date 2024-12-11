@@ -1,0 +1,94 @@
+version: '3.8'
+services:
+    activemq:
+        image: apache/activemq-artemis:latest-alpine
+        container_name: activemq
+        ports:
+            - "61616:61616"
+            - "8161:8161"
+        restart: unless-stopped
+        networks:
+            - backend-network
+
+    rabbitmq:
+        image: rabbitmq:3.10.5-management
+        container_name: rabbitmq
+        ports:
+            - "5672:5672"
+            - "15672:15672"
+        restart: unless-stopped
+        networks:
+            - backend-network
+
+    db:
+        image: postgres:14
+        container_name: db
+        ports:
+            - "5432:5432"
+        environment:
+            - POSTGRES_USER=postgres
+            - POSTGRES_PASSWORD=123
+            - POSTGRES_DB=bank
+        restart: unless-stopped
+        volumes:
+            - ./init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
+        networks:
+            - backend-network
+    
+    redis:
+        image: 'redis:latest'
+        container_name: rdb
+        ports:
+            - "6379:6379"
+        restart: unless-stopped
+        networks:
+            - backend-network
+    
+    user-service:
+        image: harbor.k8s.elab.rs/banka-4/user-service:latest
+        ports:
+            - "8080:8080"
+        container_name: user-service 
+        restart: unless-stopped
+        networks:
+            - backend-network
+
+    bank-service:
+        image: harbor.k8s.elab.rs/banka-4/bank-service:latest
+        ports:
+            - "8082:8082"
+        container_name: bank-service
+        restart: unless-stopped
+        networks:
+            - backend-network
+    
+    stock-market-service:
+        image: harbor.k8s.elab.rs/banka-4/stock-market-service:latest
+        ports:
+            - "8081:8081"
+        container_name: stock-market-service
+        restart: unless-stopped
+        networks:
+            - backend-network
+
+    transaction-service:
+        image: harbor.k8s.elab.rs/banka-4/transaction-service:latest
+        ports:
+            - "8083:8083"
+        container_name: transaction-service
+        restart: unless-stopped
+        networks:
+            - backend-network
+
+    notification-service:
+        image: harbor.k8s.elab.rs/banka-4/notification-service:latest
+        ports:
+            - "8084:8084"
+        container_name: notification-service
+        restart: unless-stopped
+        networks:
+            - backend-network
+
+networks:
+    backend-network:
+        driver: bridge
