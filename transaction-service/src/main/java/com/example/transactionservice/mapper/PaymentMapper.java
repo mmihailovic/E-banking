@@ -63,9 +63,9 @@ public class PaymentMapper {
                 payment.getTransactionExecutionTime());
     }
 
-    public PaymentBrokerDTO paymentToPaymentBrokerDto(Payment payment, Long userId, String type, String code) {
-        String email = jwtUtil.extractUsername(jwtUtil.getCurrentToken());
+    public PaymentBrokerDTO paymentToPaymentBrokerDto(Payment payment, String type, String code) {
+        String email = jwtUtil.extractUsername(jwtUtil.extractToken());
         return new PaymentBrokerDTO(payment.getId(), email, payment.getSenderAccountNumber(), payment.getReceiverAccountNumber()
-                , payment.getAmount(), userId, type, code);
+                , payment.getAmount(), jwtUtil.getIDForLoggedUser(), type, code);
     }
 }

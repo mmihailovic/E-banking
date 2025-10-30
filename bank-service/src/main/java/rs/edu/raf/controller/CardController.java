@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import rs.edu.raf.dto.CardDTO;
 import rs.edu.raf.dto.CreateCardDto;
+import rs.edu.raf.security.JwtUtil;
 import rs.edu.raf.service.CardService;
 
 import java.util.List;
@@ -21,9 +22,9 @@ import java.util.List;
 @AllArgsConstructor
 @Tag(name = "Cards", description = "Managing cards")
 @SecurityRequirement(name = "jwt")
-@CrossOrigin(origins = "*")
 public class CardController {
     private final CardService cardService;
+    private final JwtUtil jwtUtil;
 
     @ApiOperation(value = "Create card")
     @PostMapping("/create")
@@ -67,7 +68,7 @@ public class CardController {
 
     @ApiOperation(value = "Get cards for currently logged client")
     @GetMapping("/client")
-    public ResponseEntity<List<CardDTO>> getAllCardsForLoggedClient(@RequestAttribute("userId") Long id){
-        return new ResponseEntity<>(cardService.getAllCardsForUser(id), HttpStatus.OK);
+    public ResponseEntity<List<CardDTO>> getAllCardsForLoggedClient(){
+        return new ResponseEntity<>(cardService.getAllCardsForUser(jwtUtil.getIDForLoggedUser()), HttpStatus.OK);
     }
 }

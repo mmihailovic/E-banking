@@ -28,9 +28,9 @@ public interface CompanyService {
 
     /**
      * Adds bank account with specified account number to specified company
-     * @param id the ID of the company
+     * @param TIN TIN of the company
      * @param bankAccountNumber the number of the bank account
-     * @return True if adding bank account to company is successful, otherwise false
+     * @return Company ID if adding bank account to company is successful, otherwise null
      */
-    boolean addBankAccountToCompany(Long id, Long bankAccountNumber);
+    Long addBankAccountToCompany(Integer TIN, Long bankAccountNumber);
 }

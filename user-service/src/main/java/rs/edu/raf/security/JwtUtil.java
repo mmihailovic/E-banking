@@ -3,6 +3,8 @@ package rs.edu.raf.security;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -23,6 +25,8 @@ public class JwtUtil {
     private static final String SECRET_KEY = "MY JWT SECRET";
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private HttpServletRequest httpServletRequest;
 
     public  Claims extractAllClaims(String token) {
         return Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody();
@@ -78,5 +82,37 @@ public class JwtUtil {
         }
 
         return 0;
+    }
+
+    public Long getRealIDForLoggedUser() {
+        String jwt = extractToken();
+        Claims claims = extractAllClaims(jwt);
+        return (Long) claims.get("id");
+    }
+
+
+    public Long getIDForLoggedUser() {
+        String jwt = extractToken();
+        Claims claims = extractAllClaims(jwt);
+        String permissions = (String) claims.get("permission");
+
+        if(permissions.contains("ROLE_CLIENT"))
+            return (Long) claims.get("id");
+
+        return (Long) claims.get("companyId");
+    }
+
+    public String extractToken() {
+        Cookie[] cookies = httpServletRequest.getCookies();
+
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if ("AuthToken".equals(cookie.getName())) {
+                    return cookie.getValue();
+                }
+            }
+        }
+
+        return null;
     }
 }

@@ -104,23 +104,23 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public boolean addBankAccountToClient(Long clientId, Long bankAccountNumber) {
-        Client client = clientRepository.findByIdAndActiveIsTrue(clientId)
-                .orElseThrow(() -> new UserNotFoundException("User with ID " + clientId + " not found!"));
+    public Long addBankAccountToClient(String JMBG, Long bankAccountNumber) {
+        Client client = clientRepository.findByJMBGAndActiveIsTrue(JMBG)
+                .orElseThrow(() -> new UserNotFoundException("User with JMBG " + JMBG + " not found!"));
 
         if(client.getAccountNumbers() == null){
             client.setAccountNumbers(bankAccountNumber.toString());
             clientRepository.save(client);
-            return true;
+            return client.getId();
         }
 
         if(client.getAccountNumbers().contains(bankAccountNumber.toString())){
-            return false;
+            return null;
         }
 
         client.setAccountNumbers(client.getAccountNumbers() + "," + bankAccountNumber);
         clientRepository.save(client);
-        return true;
+        return client.getId();
     }
 
     private void updateIfPresent(Consumer<String> setter, String value) {

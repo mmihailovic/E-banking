@@ -22,16 +22,14 @@ public class PaymentController {
 
     @PostMapping("/internal")
     @Operation(description = "Create internal payment")
-    public ResponseEntity<InternalPaymentDTO> createInternalPayment(@RequestBody @Valid InternalPaymentCreateDTO internalPaymentCreateDT0,
-                                                                    @RequestAttribute("userId") Long userId) {
-        return new ResponseEntity<>(paymentService.createInternalPayment(internalPaymentCreateDT0, userId), HttpStatus.CREATED);
+    public ResponseEntity<InternalPaymentDTO> createInternalPayment(@RequestBody @Valid InternalPaymentCreateDTO internalPaymentCreateDT0) {
+        return new ResponseEntity<>(paymentService.createInternalPayment(internalPaymentCreateDT0), HttpStatus.CREATED);
     }
 
     @PostMapping("/external")
     @Operation(description = "Create external payment")
-    public ResponseEntity<ExternalPaymentDTO> createExternalPayment(@RequestBody @Valid ExternalPaymentCreateDTO externalPaymentCreateDTO,
-                                                                    @RequestAttribute("userId") Long userId) {
-        return new ResponseEntity<>(paymentService.createExternalPayment(externalPaymentCreateDTO, userId), HttpStatus.CREATED);
+    public ResponseEntity<ExternalPaymentDTO> createExternalPayment(@RequestBody @Valid ExternalPaymentCreateDTO externalPaymentCreateDTO) {
+        return new ResponseEntity<>(paymentService.createExternalPayment(externalPaymentCreateDTO), HttpStatus.CREATED);
     }
 
     @GetMapping("/account/{accountNumber}")

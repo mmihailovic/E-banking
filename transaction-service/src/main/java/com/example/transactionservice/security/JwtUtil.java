@@ -2,9 +2,9 @@ package com.example.transactionservice.security;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
@@ -33,14 +33,36 @@ public class JwtUtil {
     public boolean validateToken(String token, UserDetails user) {
         return (user.getUsername().equals(extractUsername(token)) && !isTokenExpired(token));
     }
-    public String getCurrentToken() {
-        return httpServletRequest.getHeader("Authorization").substring(7);
+    public Long getRealIDForLoggedUser() {
+        String jwt = extractToken();
+        Claims claims = extractAllClaims(jwt);
+        return Long.valueOf((Integer) claims.get("id"));
     }
 
-    public HttpHeaders getAuthorizationHeader() {
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add("Authorization", getCurrentToken());
-        return httpHeaders;
+
+    public Long getIDForLoggedUser() {
+        String jwt = extractToken();
+        Claims claims = extractAllClaims(jwt);
+        String permissions = (String) claims.get("permission");
+
+        if(permissions.contains("ROLE_CLIENT"))
+            return Long.valueOf((Integer) claims.get("id"));
+
+        return Long.valueOf((Integer) claims.get("companyId"));
+    }
+
+    public String extractToken() {
+        Cookie[] cookies = httpServletRequest.getCookies();
+
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if ("AuthToken".equals(cookie.getName())) {
+                    return cookie.getValue();
+                }
+            }
+        }
+
+        return null;
     }
 
 }

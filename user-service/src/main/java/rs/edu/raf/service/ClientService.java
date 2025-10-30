@@ -76,9 +76,9 @@ public interface ClientService {
     /**
      * Adds an account to a client.
      *
-     * @param clientId        The ID of the client.
+     * @param JMBG JMBG of the client.
      * @param bankAccountNumber The bank account number to add.
-     * @return True if the account is successfully added, otherwise false.
+     * @return ID of the client if the account is successfully added, otherwise null.
      */
-    boolean addBankAccountToClient(Long clientId, Long bankAccountNumber);
+    Long addBankAccountToClient(String JMBG, Long bankAccountNumber);
 }

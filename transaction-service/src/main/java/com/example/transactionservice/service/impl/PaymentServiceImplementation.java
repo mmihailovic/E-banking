@@ -37,21 +37,19 @@ public class PaymentServiceImplementation implements PaymentService {
     private Gson gson;
 
     @Override
-    public InternalPaymentDTO createInternalPayment(InternalPaymentCreateDTO internalPaymentCreateDTO, Long userId) {
+    public InternalPaymentDTO createInternalPayment(InternalPaymentCreateDTO internalPaymentCreateDTO) {
         InternalPayment internalPayment = paymentRepository.save(paymentMapper.internalPaymentCreateDTOtoInternalPayment(internalPaymentCreateDTO));
-        PaymentBrokerDTO paymentBrokerDTO = paymentMapper.paymentToPaymentBrokerDto(internalPayment, userId,
-                "INTERNAL", null);
+        PaymentBrokerDTO paymentBrokerDTO = paymentMapper.paymentToPaymentBrokerDto(internalPayment, "INTERNAL", null);
 
         rabbitTemplate.convertAndSend(TRANSACTION_EXCHANGE, TRANSACTION_ROUTING_KEY, gson.toJson(paymentBrokerDTO));
         return paymentMapper.internalPaymentToInternalPaymentDTO(internalPayment);
     }
 
     @Override
-    public ExternalPaymentDTO createExternalPayment(ExternalPaymentCreateDTO externalPaymentCreateDTO, Long userId) {
+    public ExternalPaymentDTO createExternalPayment(ExternalPaymentCreateDTO externalPaymentCreateDTO) {
         ExternalPayment externalPayment = paymentRepository.save(paymentMapper.externalPaymentCreateDTOtoExternalPayment(externalPaymentCreateDTO));
 
-        PaymentBrokerDTO paymentBrokerDTO = paymentMapper.paymentToPaymentBrokerDto(externalPayment, userId,
-                "EXTERNAL", externalPaymentCreateDTO.code());
+        PaymentBrokerDTO paymentBrokerDTO = paymentMapper.paymentToPaymentBrokerDto(externalPayment,"EXTERNAL", externalPaymentCreateDTO.code());
 
         Boolean validCode = userServiceRestTemplate.exchange("/user/" + paymentBrokerDTO.email() +
                         "/code/"+paymentBrokerDTO.paymentCode(),

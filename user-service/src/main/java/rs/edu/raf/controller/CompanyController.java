@@ -19,7 +19,6 @@ import java.util.List;
 @AllArgsConstructor
 @Tag(name = "Company Controller", description = "Manage companies")
 @SecurityRequirement(name = "jwt")
-@CrossOrigin("*")
 public class CompanyController {
     private CompanyService companyService;
 
@@ -41,10 +40,10 @@ public class CompanyController {
         return new ResponseEntity<>(companyService.createCompany(companyCreateDTO), HttpStatus.CREATED);
     }
 
-    @PutMapping("/{id}/account/{accountNumber}")
+    @PutMapping("/{TIN}/account/{accountNumber}")
     @ApiOperation("Add bank account to company")
-    public ResponseEntity<Boolean> addAccountToCompany(@Parameter(name = "Company ID") @PathVariable("id") Long id,
+    public ResponseEntity<Long> addAccountToCompany(@Parameter(name = "Company TIN") @PathVariable("TIN") Integer TIN,
                        @Parameter(name = "Bank account number") @PathVariable("accountNumber") Long accountNumber) {
-        return new ResponseEntity<>(companyService.addBankAccountToCompany(id, accountNumber), HttpStatus.OK);
+        return new ResponseEntity<>(companyService.addBankAccountToCompany(TIN, accountNumber), HttpStatus.OK);
     }
 }

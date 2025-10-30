@@ -95,6 +95,14 @@ public class CreditServiceImpl implements CreditService {
     }
 
     @Override
+    public List<CreditDTO> getAllCredits() {
+        return creditRepository.findAll()
+                .stream()
+                .map(creditMapper::creditToCreditDTO)
+                .toList();
+    }
+
+    @Override
     public void processCreditInstallment() {
         List<Credit> credits = creditRepository.findAllByRemainingDebtGreaterThan(BigDecimal.ZERO);
 

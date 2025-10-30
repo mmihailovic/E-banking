@@ -18,7 +18,6 @@ import java.util.List;
 @Tag(name = "FavouriteRecipient", description = "Manage favourite recipient for clients")
 @AllArgsConstructor
 @SecurityRequirement(name = "jwt")
-@CrossOrigin(origins = "*")
 public class FavouriteRecipientController {
 
     private FavouriteRecipientService favouriteRecipientService;

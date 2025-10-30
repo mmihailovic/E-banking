@@ -19,7 +19,6 @@ import java.util.List;
 @RequestMapping("/employee")
 @AllArgsConstructor
 @SecurityRequirement(name="jwt")
-@CrossOrigin(origins = "*")
 public class EmployeeController {
     private EmployeeService employeeService;
 

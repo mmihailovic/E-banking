@@ -6,7 +6,7 @@ import jakarta.validation.constraints.PositiveOrZero;
 import java.math.BigDecimal;
 
 public record ForeignCurrencyBankAccountCreateDTO (
-        @NotNull Long owner,
+        @NotNull String JMBG,
         @NotNull Long currencyId,
         @NotNull @PositiveOrZero BigDecimal maintenancePrice
 ) { }

@@ -62,6 +62,12 @@ public interface CreditService {
     void createCredit(CreditRequest creditRequest);
 
     /**
+     * Retrieves all credits
+     * @return List of {@link CreditDTO} objects representing the credits
+     */
+    List<CreditDTO> getAllCredits();
+
+    /**
      * This method processes credit installment
      */
     void processCreditInstallment();

@@ -3,7 +3,6 @@ package rs.edu.raf.mapper;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 import rs.edu.raf.dto.ForeignCurrencyBankAccountCreateDTO;
-import rs.edu.raf.dto.BusinessBankAccountCreateDTO;
 import rs.edu.raf.dto.CurrentBankAccountCreateDTO;
 import rs.edu.raf.dto.BankAccountDTO;
 import rs.edu.raf.model.accounts.*;
@@ -29,7 +28,6 @@ public class BankAccountMapper {
         ForeignCurrencyBankAccount foreignCurrencyBankAccount = new ForeignCurrencyBankAccount();
 
         foreignCurrencyBankAccount.setMaintenancePrice(foreignCurrencyBankAccountCreateDTO.maintenancePrice());
-        foreignCurrencyBankAccount.setOwner(foreignCurrencyBankAccountCreateDTO.owner());
         foreignCurrencyBankAccount.setBalance(BigDecimal.ZERO);
         foreignCurrencyBankAccount.setAvailableBalance(BigDecimal.ZERO);
         foreignCurrencyBankAccount.setCreator(creator);
@@ -40,11 +38,9 @@ public class BankAccountMapper {
         return foreignCurrencyBankAccount;
     }
 
-    public BusinessBankAccount businessBankAccountCreateDtoToBusinessBankAccount
-            (BusinessBankAccountCreateDTO businessBankAccountCreateDTO, Long creator) {
+    public BusinessBankAccount businessBankAccountCreateDtoToBusinessBankAccount(Long creator) {
         BusinessBankAccount businessBankAccount = new BusinessBankAccount();
 
-        businessBankAccount.setOwner(businessBankAccountCreateDTO.companyId());
         businessBankAccount.setBalance(BigDecimal.ZERO);
         businessBankAccount.setAvailableBalance(BigDecimal.ZERO);
         businessBankAccount.setCreator(creator);
@@ -59,7 +55,6 @@ public class BankAccountMapper {
             (CurrentBankAccountCreateDTO currentBankAccountCreateDTO, Long creator) {
         CurrentBankAccount currentBankAccount = new CurrentBankAccount();
 
-        currentBankAccount.setOwner(currentBankAccountCreateDTO.owner());
         currentBankAccount.setBalance(BigDecimal.ZERO);
         currentBankAccount.setAvailableBalance(BigDecimal.ZERO);
         currentBankAccount.setCreator(creator);

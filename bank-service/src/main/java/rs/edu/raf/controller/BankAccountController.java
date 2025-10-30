@@ -13,6 +13,7 @@ import rs.edu.raf.dto.BankAccountDTO;
 import rs.edu.raf.dto.BusinessBankAccountCreateDTO;
 import rs.edu.raf.dto.CurrentBankAccountCreateDTO;
 import rs.edu.raf.dto.ForeignCurrencyBankAccountCreateDTO;
+import rs.edu.raf.security.JwtUtil;
 import rs.edu.raf.service.BankAccountService;
 
 import java.math.BigDecimal;
@@ -23,31 +24,33 @@ import java.util.List;
 @Tag(name = "Bank accounts", description = "Managing bank accounts")
 @AllArgsConstructor
 @SecurityRequirement(name = "jwt")
-@CrossOrigin(origins = "*")
 public class BankAccountController {
     private BankAccountService bankAccountService;
+    private JwtUtil jwtUtil;
 
     @ApiOperation(value = "Create foreign currency bank account")
     @PostMapping("/foreign-currency")
     public ResponseEntity<BankAccountDTO> createForeignCurrencyBankAccount(
-            @RequestBody @Valid ForeignCurrencyBankAccountCreateDTO foreignCurrencyBankAccountCreateDTO,
-            @RequestAttribute("userId") Long creator) {
-        return new ResponseEntity<>(bankAccountService.createForeignCurrencyBankAccount(foreignCurrencyBankAccountCreateDTO, creator), HttpStatus.OK);
+            @RequestBody @Valid ForeignCurrencyBankAccountCreateDTO foreignCurrencyBankAccountCreateDTO) {
+        return new ResponseEntity<>(
+                bankAccountService.createForeignCurrencyBankAccount(foreignCurrencyBankAccountCreateDTO,
+                jwtUtil.getRealIDForLoggedUser()), HttpStatus.OK
+        );
     }
 
     @ApiOperation(value = "Create business bank account")
     @PostMapping("/business")
     public ResponseEntity<BankAccountDTO> createBusinessBankAccount(
-            @RequestBody @Valid BusinessBankAccountCreateDTO businessBankAccountCreateDTO,
-            @RequestAttribute("userId") Long creator){
-        return new ResponseEntity<>(bankAccountService.createBusinessBankAccount(businessBankAccountCreateDTO, creator), HttpStatus.OK);
+            @RequestBody @Valid BusinessBankAccountCreateDTO businessBankAccountCreateDTO){
+        return new ResponseEntity<>(bankAccountService.createBusinessBankAccount(businessBankAccountCreateDTO,
+                jwtUtil.getRealIDForLoggedUser()), HttpStatus.OK);
     }
     @ApiOperation(value = "Create current bank account")
     @PostMapping("/current")
     public ResponseEntity<BankAccountDTO> createCurrentBankAccount(
-            @RequestBody @Valid CurrentBankAccountCreateDTO currentBankAccountCreateDTO,
-            @RequestAttribute("userId") Long creator){
-        return new ResponseEntity<>(bankAccountService.createCurrentBankAccount(currentBankAccountCreateDTO, creator), HttpStatus.OK);
+            @RequestBody @Valid CurrentBankAccountCreateDTO currentBankAccountCreateDTO){
+        return new ResponseEntity<>(bankAccountService.createCurrentBankAccount(currentBankAccountCreateDTO,
+                jwtUtil.getRealIDForLoggedUser()), HttpStatus.OK);
     }
     @ApiOperation(value = "Get all bank accounts for client")
     @GetMapping("/client/{id}")
@@ -57,8 +60,8 @@ public class BankAccountController {
 
     @ApiOperation(value = "Get all bank account for logged client")
     @GetMapping("/client")
-    public ResponseEntity<List<BankAccountDTO>> getAllBankAccountsForLoggedClient(@RequestAttribute("userId") Long id){
-        return new ResponseEntity<>(bankAccountService.getAllBankAccountsForOwner(id), HttpStatus.OK);
+    public ResponseEntity<List<BankAccountDTO>> getAllBankAccountsForLoggedClient(){
+        return new ResponseEntity<>(bankAccountService.getAllBankAccountsForOwner(jwtUtil.getIDForLoggedUser()), HttpStatus.OK);
     }
 
     @ApiOperation(value = "Get bank account with ID")

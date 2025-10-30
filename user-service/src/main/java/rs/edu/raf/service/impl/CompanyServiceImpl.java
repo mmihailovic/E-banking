@@ -36,11 +36,11 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public boolean addBankAccountToCompany(Long id, Long bankAccountNumber) {
-        Optional<Company> optionalCompany = companyRepository.findById(id);
+    public Long addBankAccountToCompany(Integer TIN, Long bankAccountNumber) {
+        Optional<Company> optionalCompany = companyRepository.findByTIN(TIN);
 
         if(optionalCompany.isEmpty()) {
-            return false;
+            return null;
         }
 
         Company company = optionalCompany.get();
@@ -48,15 +48,15 @@ public class CompanyServiceImpl implements CompanyService {
         if(company.getAccountNumbers() == null){
             company.setAccountNumbers(bankAccountNumber.toString());
             companyRepository.save(company);
-            return true;
+            return company.getId();
         }
 
         if(company.getAccountNumbers().contains(bankAccountNumber.toString())){
-            return false;
+            return null;
         }
 
         company.setAccountNumbers(company.getAccountNumbers() + "," + bankAccountNumber);
         companyRepository.save(company);
-        return true;
+        return company.getId();
     }
 }

@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import rs.edu.raf.dto.*;
 
+import rs.edu.raf.security.JwtUtil;
 import rs.edu.raf.service.ClientService;
 
 import java.util.List;
@@ -18,9 +19,9 @@ import java.util.List;
 @RequestMapping("/clients")
 @AllArgsConstructor
 @SecurityRequirement(name = "jwt")
-@CrossOrigin(origins = "*")
 public class ClientController {
     private ClientService clientService;
+    private JwtUtil jwtUtil;
 
     @PostMapping("/add")
     @Operation(description = "Create new client")
@@ -37,9 +38,8 @@ public class ClientController {
 
     @PutMapping
     @Operation(description = "Edit currently logged client")
-    public ResponseEntity<ClientDTO> editLoggedClient(@RequestBody @Valid EditClientDTO editClientDTO,
-                                                      @RequestAttribute("userId") Long clientId) {
-        return new ResponseEntity<>(clientService.editClient(editClientDTO, clientId), HttpStatus.OK);
+    public ResponseEntity<ClientDTO> editLoggedClient(@RequestBody @Valid EditClientDTO editClientDTO) {
+        return new ResponseEntity<>(clientService.editClient(editClientDTO, jwtUtil.getIDForLoggedUser()), HttpStatus.OK);
     }
 
     @GetMapping
@@ -79,8 +79,8 @@ public class ClientController {
         return new ResponseEntity<>(clientService.getActiveClientById(id), HttpStatus.OK);
     }
 
-    @PutMapping("/{id}/account/{accountNumber}")
-    public ResponseEntity<Boolean> addAccountToClient(@PathVariable("id") Long id, @PathVariable("accountNumber") Long accountNumber) {
-        return new ResponseEntity<>(clientService.addBankAccountToClient(id, accountNumber), HttpStatus.OK);
+    @PutMapping("/{JMBG}/account/{accountNumber}")
+    public ResponseEntity<Long> addAccountToClient(@PathVariable("JMBG") String JMBG, @PathVariable("accountNumber") Long accountNumber) {
+        return new ResponseEntity<>(clientService.addBankAccountToClient(JMBG, accountNumber), HttpStatus.OK);
     }
 }

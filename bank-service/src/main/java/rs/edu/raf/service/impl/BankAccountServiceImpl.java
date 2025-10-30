@@ -52,10 +52,12 @@ public class BankAccountServiceImpl implements BankAccountService {
                 bankAccountMapper.foreignCurrencyBankAccountCreateDtoToForeignCurrencyBankAccount(foreignCurrencyBankAccountCreateDTO, creator));
         foreignCurrencyBankAccount.setAccountNumber(generateBankAccountNumber(foreignCurrencyBankAccount));
 
-        boolean response = addAccountToClient(foreignCurrencyBankAccount);
+        Long response = addAccountToClient(foreignCurrencyBankAccount, foreignCurrencyBankAccountCreateDTO.JMBG());
 
-        if(response)
+        if(response != null) {
+            foreignCurrencyBankAccount.setOwner(response);
             return bankAccountMapper.bankAccountToBankAccountDTO(bankAccountRepository.save(foreignCurrencyBankAccount));
+        }
 
         throw new RuntimeException();
     }
@@ -64,13 +66,15 @@ public class BankAccountServiceImpl implements BankAccountService {
     @Transactional
     public BankAccountDTO createBusinessBankAccount(BusinessBankAccountCreateDTO businessBankAccountCreateDTO, Long creator) {
         BusinessBankAccount businessBankAccount = bankAccountRepository.save(
-                bankAccountMapper.businessBankAccountCreateDtoToBusinessBankAccount(businessBankAccountCreateDTO, creator));
+                bankAccountMapper.businessBankAccountCreateDtoToBusinessBankAccount(creator));
         businessBankAccount.setAccountNumber(generateBankAccountNumber(businessBankAccount));
 
-        boolean response = addAccountToCompany(businessBankAccount);
+        Long response = addAccountToCompany(businessBankAccount, businessBankAccountCreateDTO.TIN());
 
-        if(response)
+        if(response != null) {
+            businessBankAccount.setOwner(response);
             return bankAccountMapper.bankAccountToBankAccountDTO(bankAccountRepository.save(businessBankAccount));
+        }
 
         throw new RuntimeException();
     }
@@ -82,9 +86,10 @@ public class BankAccountServiceImpl implements BankAccountService {
                 bankAccountMapper.currentBankAccountCreateDTOtoCurrentBankAccount(currentBankAccountCreateDTO, creator));
         currentCurrencyBankAccount.setAccountNumber(generateBankAccountNumber(currentCurrencyBankAccount));
 
-        boolean response = addAccountToClient(currentCurrencyBankAccount);
+        Long response = addAccountToClient(currentCurrencyBankAccount, currentBankAccountCreateDTO.JBMG());
 
-        if(response) {
+        if(response != null) {
+            currentCurrencyBankAccount.setOwner(response);
             return bankAccountMapper.bankAccountToBankAccountDTO(bankAccountRepository.save(currentCurrencyBankAccount));
         }
 
@@ -235,19 +240,17 @@ public class BankAccountServiceImpl implements BankAccountService {
         bankAccountRepository.save(sellerBankAccount);
     }
 
-    private Boolean addAccountToClient(BankAccount bankAccount) {
-        Long owner = bankAccount.getOwner();
+    private Long addAccountToClient(BankAccount bankAccount, String JMBG) {
         Long bankAccountNumber = bankAccount.getAccountNumber();
 
-        return userServiceRestTemplate.exchange("/clients/"+owner + "/account/" + bankAccountNumber,
-                HttpMethod.PUT, new HttpEntity<>(jwtUtil.getAuthorizationHeader()), Boolean.class).getBody();
+        return userServiceRestTemplate.exchange("/clients/"+JMBG + "/account/" + bankAccountNumber,
+                HttpMethod.PUT, new HttpEntity<>(jwtUtil.extractToken()), Long.class).getBody();
     }
 
-    private Boolean addAccountToCompany(BankAccount bankAccount) {
-        Long companyId = bankAccount.getOwner();
+    private Long addAccountToCompany(BankAccount bankAccount, Integer TIN) {
         Long bankAccountNumber = bankAccount.getAccountNumber();
 
-        return userServiceRestTemplate.exchange("/company/"+companyId + "/account/" + bankAccountNumber,
-                HttpMethod.PUT, new HttpEntity<>(jwtUtil.getAuthorizationHeader()), Boolean.class).getBody();
+        return userServiceRestTemplate.exchange("/company/"+TIN + "/account/" + bankAccountNumber,
+                HttpMethod.PUT, new HttpEntity<>(jwtUtil.extractToken()), Long.class).getBody();
     }
 }

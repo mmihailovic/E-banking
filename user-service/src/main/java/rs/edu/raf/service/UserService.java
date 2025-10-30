@@ -1,17 +1,22 @@
 package rs.edu.raf.service;
 
-import rs.edu.raf.dto.ChangePasswordDTO;
-import rs.edu.raf.dto.ChangePasswordWithCodeDTO;
-import rs.edu.raf.dto.LoginDto;
+import rs.edu.raf.dto.*;
 
 public interface UserService {
 
     /**
      * Log user into account
      * @param loginDto user credentials
-     * @return JWT if login is successful
+     * @return {@link LoginResponseDTO} if login is successful
      */
-    String loginUser(LoginDto loginDto);
+    LoginResponseDTO loginUser(LoginDto loginDto);
+
+    /**
+     * Gets the currently logged user
+     * @return {@link LoggedUserDTO} object containing information
+     * about currently logged user
+     */
+    LoggedUserDTO getLoggedUser();
 
     /**
      * Changes the password of a user.

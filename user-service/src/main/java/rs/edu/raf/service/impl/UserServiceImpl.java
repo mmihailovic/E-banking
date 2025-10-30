@@ -3,14 +3,16 @@ package rs.edu.raf.service.impl;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import rs.edu.raf.dto.ChangePasswordDTO;
-import rs.edu.raf.dto.ChangePasswordWithCodeDTO;
-import rs.edu.raf.dto.LoginDto;
+import rs.edu.raf.dto.*;
 import rs.edu.raf.exceptions.InvalidOldPasswordException;
 import rs.edu.raf.exceptions.InvalidTokenException;
 import rs.edu.raf.exceptions.UserNotFoundException;
+import rs.edu.raf.mapper.UserMapper;
 import rs.edu.raf.model.code.CodeType;
 import rs.edu.raf.model.user.User;
 import rs.edu.raf.repository.UserRepository;
@@ -26,11 +28,20 @@ public class UserServiceImpl implements UserService {
     private BCryptPasswordEncoder bCryptPasswordEncoder;
     private CodeService codeService;
     private AuthenticationManager authenticationManager;
+    private UserMapper userMapper;
 
     @Override
-    public String loginUser(LoginDto loginDto) {
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginDto.username(), loginDto.password()));
-        return jwtUtil.generateToken(loginDto.username());
+    public LoginResponseDTO loginUser(LoginDto loginDto) {
+        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginDto.username(), loginDto.password()));
+        String token = jwtUtil.generateToken(loginDto.username());
+        UserDetails user = (UserDetails) authentication.getPrincipal();
+
+        return new LoginResponseDTO(userMapper.userToLoggedUserDTO((User)user), token);
+    }
+
+    @Override
+    public LoggedUserDTO getLoggedUser() {
+        return userMapper.userToLoggedUserDTO((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
     }
 
     @Override

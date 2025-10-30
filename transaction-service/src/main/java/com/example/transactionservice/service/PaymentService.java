@@ -9,18 +9,16 @@ public interface PaymentService {
     /**
      * Creates internal payment
      * @param internalPaymentCreateDTO DTO object contains information about internal payment
-     * @param userId payment's initiator
      * @return {@link InternalPaymentDTO} object representing created internal payment
      */
-    InternalPaymentDTO createInternalPayment(InternalPaymentCreateDTO internalPaymentCreateDTO, Long userId);
+    InternalPaymentDTO createInternalPayment(InternalPaymentCreateDTO internalPaymentCreateDTO);
 
     /**
      * Creates external payment
      * @param externalPaymentCreateDTO DTO object contains information about external payment
-     * @param userId payment's initiator
      * @return {@link ExternalPaymentDTO} object representing created external payment
      */
-    ExternalPaymentDTO createExternalPayment(ExternalPaymentCreateDTO externalPaymentCreateDTO, Long userId);
+    ExternalPaymentDTO createExternalPayment(ExternalPaymentCreateDTO externalPaymentCreateDTO);
 
     /**
      * Get all payments for specified bank account number

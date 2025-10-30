@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import rs.edu.raf.dto.CreditDTO;
 import rs.edu.raf.dto.CreditRequestCreateDto;
 import rs.edu.raf.dto.CreditRequestDTO;
+import rs.edu.raf.security.JwtUtil;
 import rs.edu.raf.service.CreditService;
 
 import java.util.List;
@@ -21,9 +22,9 @@ import java.util.List;
 @AllArgsConstructor
 @Tag(name = "Credits", description = "Managing credits")
 @SecurityRequirement(name = "jwt")
-@CrossOrigin(origins = "*")
 public class CreditController {
     private final CreditService creditService;
+    private final JwtUtil jwtUtil;
 
     @ApiOperation(value = "Apply for credit")
     @PostMapping("/apply")
@@ -45,17 +46,28 @@ public class CreditController {
     }
 
     @ApiOperation(value = "Get all credit requests with specified status")
-    @GetMapping("/all/{status}")
+    @GetMapping("/requests/all/{status}")
     public ResponseEntity<List<CreditRequestDTO>> getAllCreditRequestsWithStatus(@Parameter(name = "Credit request status")
                                                                                     @PathVariable("status") String status){
         return new ResponseEntity<>(creditService.getAllCreditRequestsWithStatus(status), HttpStatus.OK);
     }
 
     @ApiOperation(value = "Get all credit requests with specified status for user")
-    @GetMapping("/{status}")
-    public ResponseEntity<List<CreditRequestDTO>> getAllCreditRequestsForUserWithStatus(@RequestAttribute("userId") Long userId,
-                                    @Parameter(name = "Credit request status") @PathVariable("status") String status) {
-        return new ResponseEntity<>(creditService.getAllCreditRequestForUserWithStatus(userId, status), HttpStatus.OK);
+    @GetMapping("/requests/{status}")
+    public ResponseEntity<List<CreditRequestDTO>> getAllCreditRequestsForUserWithStatus(@Parameter(name = "Credit request status") @PathVariable("status") String status) {
+        return new ResponseEntity<>(creditService.getAllCreditRequestForUserWithStatus(jwtUtil.getIDForLoggedUser(), status), HttpStatus.OK);
+    }
+
+    @ApiOperation("Get all credits")
+    @GetMapping("/all")
+    public ResponseEntity<List<CreditDTO>> getAllCredits() {
+        return new ResponseEntity<>(creditService.getAllCredits(), HttpStatus.OK);
+    }
+
+    @ApiOperation("Get all credits")
+    @GetMapping
+    public ResponseEntity<List<CreditDTO>> getAllCreditsForUser() {
+        return new ResponseEntity<>(creditService.getAllCredits(), HttpStatus.OK);
     }
 
     @ApiOperation("Get details about credit")
