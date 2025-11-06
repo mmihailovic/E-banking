@@ -1,3 +1,5 @@
+# Kotlin version: https://github.com/mmihailovic/E-Banking-Kotlin
+
 # E-Banking Solution
 
 This project was developed as part of the Software Engineering exam at university. It was carried out by a team of approximately 20 students, organized into three specialized groups: Backend, Frontend, and CI/CD teams. The project serves as an e-banking solution, enabling clients to carry out various banking operations and trade stocks. Through this system, users can manage their bank accounts, execute transactions, and engage in stock market trading, all within a secure and efficient digital platform. **The frontend, built with React, TypeScript, and using a Microfrontend architecture, can be explored** [here](https://github.com/mmihailovic/E-Banking-Frontend)
