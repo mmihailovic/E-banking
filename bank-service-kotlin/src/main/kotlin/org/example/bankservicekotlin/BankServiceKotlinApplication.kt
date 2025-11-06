@@ -1,4 +1,4 @@
-package org.example.userservicekotlin
+package org.example.bankservicekotlin
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
@@ -6,8 +6,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories
 
 @SpringBootApplication
 @EnableJpaRepositories
-class UserServiceApplication
+class BankServiceKotlinApplication
 
 fun main(args: Array<String>) {
-    runApplication<UserServiceApplication>(*args)
+    runApplication<BankServiceKotlinApplication>(*args)
 }

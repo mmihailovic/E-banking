@@ -32,6 +32,8 @@
         <module>stock-market-service</module>
         <module>notification-service</module>
         <module>transaction-service</module>
+        <module>user-service-kotlin</module>
+        <module>bank-service-kotlin</module>
     </modules>
 
     <build>
