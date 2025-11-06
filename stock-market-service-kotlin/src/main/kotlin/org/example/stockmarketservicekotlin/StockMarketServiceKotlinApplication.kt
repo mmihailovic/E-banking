@@ -1,4 +1,4 @@
-package org.example.bankservicekotlin
+package org.example.stockmarketservicekotlin
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
@@ -8,8 +8,8 @@ import org.springframework.scheduling.annotation.EnableScheduling
 @SpringBootApplication
 @EnableJpaRepositories
 @EnableScheduling
-class BankServiceKotlinApplication
+class StockMarketServiceKotlinApplication
 
 fun main(args: Array<String>) {
-    runApplication<BankServiceKotlinApplication>(*args)
+    runApplication<StockMarketServiceKotlinApplication>(*args)
 }
