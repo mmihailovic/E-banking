@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: stock-market-service-kotlin-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: stock-market-service-kotlin
+  template:
+    metadata:
+      labels:
+        app: stock-market-service-kotlin
+    spec:
+      containers:
+        - name: stock-market-service-kotlin
+          image: mmihailovic/stock-market-service-kotlin:latest
+          ports:
+            - containerPort: 8081

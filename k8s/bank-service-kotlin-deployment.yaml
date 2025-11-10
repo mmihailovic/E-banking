@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bank-service-kotlin-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: bank-service-kotlin
+  template:
+    metadata:
+      labels:
+        app: bank-service-kotlin
+    spec:
+      containers:
+        - name: bank-service-kotlin
+          image: mmihailovic/bank-service-kotlin:latest
+          ports:
+            - containerPort: 8082
