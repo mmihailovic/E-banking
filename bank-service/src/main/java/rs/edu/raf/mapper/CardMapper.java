@@ -56,7 +56,8 @@ public class CardMapper {
 
     private String generateCardNumber(Card card){
         CardIssuer cardIssuer = card.getCardIssuer();
-        StringBuilder cardNumber = new StringBuilder(cardIssuer.getMII());
+        StringBuilder cardNumber = new StringBuilder();
+        cardNumber.append(cardIssuer.getMII());
         cardNumber.append(cardIssuer.getBIN());
 
         String bankAccountNumber = card.getBankAccount().getAccountNumber().toString();

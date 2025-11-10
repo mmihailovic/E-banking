@@ -8,7 +8,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
 @RestController
-@RequestMapping("/kotlin/company")
+@RequestMapping("/company")
 class CompanyController(val companyService: CompanyService) {
     @GetMapping
     fun getAllCompanies(): ResponseEntity<List<CompanyDTO>> {

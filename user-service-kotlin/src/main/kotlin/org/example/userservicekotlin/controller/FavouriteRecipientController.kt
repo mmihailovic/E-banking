@@ -8,7 +8,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
 @RestController
-@RequestMapping("/kotlin/favourite-recipients")
+@RequestMapping("/favourite-recipients")
 class FavouriteRecipientController(val favouriteRecipientService: FavouriteRecipientService) {
     @PostMapping
     fun addFavouriteRecipient(@RequestBody favouriteRecipientCreateDTO: FavouriteRecipientCreateDTO): ResponseEntity<FavouriteRecipientDTO> {

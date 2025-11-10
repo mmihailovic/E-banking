@@ -9,7 +9,6 @@ import java.math.BigDecimal;
 public record CreditRequestCreateDto (
     @NotNull Long creditTypeId,
     @NotNull @Positive BigDecimal amount,
-    @NotNull Long currencyId,
     @NotNull String loanPurpose,
     @NotNull @PositiveOrZero BigDecimal salary,
     @NotNull String phoneNumber,

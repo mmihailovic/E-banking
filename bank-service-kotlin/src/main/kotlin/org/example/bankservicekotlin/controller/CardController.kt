@@ -10,7 +10,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
 @RestController
-@RequestMapping("/kotlin/cards")
+@RequestMapping("/cards")
 class CardController(
     private val cardService: CardService,
     private val jwtUtil: JwtUtil

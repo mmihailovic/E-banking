@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
 @RestController
-@RequestMapping("/kotlin/currency")
+@RequestMapping("/currency")
 class CurrencyController(private val currencyService: CurrencyService) {
     @GetMapping
     fun getAllCurrencies(): ResponseEntity<List<CurrencyDTO>> {

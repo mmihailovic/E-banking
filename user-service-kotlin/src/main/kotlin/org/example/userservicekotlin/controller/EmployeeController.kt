@@ -10,7 +10,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
 @RestController
-@RequestMapping("/kotlin/employee")
+@RequestMapping("/employee")
 class EmployeeController(val employeeService: EmployeeService) {
     @PostMapping
     fun createEmployee(@RequestBody employeeCreateDTO: @Valid EmployeeCreateDTO): ResponseEntity<EmployeeDTO> {

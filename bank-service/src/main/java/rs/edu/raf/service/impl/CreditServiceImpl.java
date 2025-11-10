@@ -1,5 +1,6 @@
 package rs.edu.raf.service.impl;
 
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import rs.edu.raf.dto.CreditDTO;
@@ -16,6 +17,7 @@ import rs.edu.raf.model.credit.CreditType;
 import rs.edu.raf.repository.CreditRepository;
 import rs.edu.raf.repository.CreditRequestRepository;
 import rs.edu.raf.repository.CreditTypeRepository;
+import rs.edu.raf.repository.accounts.BankAccountRepository;
 import rs.edu.raf.service.CreditService;
 
 import java.math.BigDecimal;
@@ -33,6 +35,7 @@ public class CreditServiceImpl implements CreditService {
     private final CreditRepository creditRepository;
     private final CreditTypeRepository creditTypeRepository;
     private final CreditMapper creditMapper;
+    private final BankAccountRepository bankAccountRepository;
 
     public CreditRequestDTO applyForCredit(CreditRequestCreateDto creditRequestCreateDto){
         CreditType creditType = creditTypeRepository.findById(creditRequestCreateDto.creditTypeId())
@@ -51,6 +54,7 @@ public class CreditServiceImpl implements CreditService {
         return creditRequestMapper.creditRequestToCreditRequestDto(creditRequestRepository.save(creditRequest));
     }
 
+    @Transactional
     public CreditRequestDTO approveCreditRequest(Long id){
         CreditRequest creditRequest = creditRequestRepository.findById(id)
                 .orElseThrow(()->new CreditRequestNotFoundException(id));
@@ -58,6 +62,12 @@ public class CreditServiceImpl implements CreditService {
         creditRequest.setCreditRequestStatus(CreditRequestStatus.APPROVED);
         creditRequestRepository.save(creditRequest);
         createCredit(creditRequest);
+
+        BankAccount bankAccount = creditRequest.getBankAccount();
+        bankAccount.setBalance(bankAccount.getBalance().add(creditRequest.getLoanAmount()));
+        bankAccount.setAvailableBalance(bankAccount.getAvailableBalance().add(creditRequest.getLoanAmount()));
+        bankAccountRepository.save(bankAccount);
+
         return creditRequestMapper.creditRequestToCreditRequestDto(creditRequest);
     }
 

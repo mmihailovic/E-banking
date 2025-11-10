@@ -8,7 +8,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
 @RestController
-@RequestMapping("/kotlin/order")
+@RequestMapping("/order")
 class OrderController(private val orderService: OrderService) {
     @PostMapping("/market")
     fun createOrder(@RequestBody marketOrderCreateDTO: @Valid MarketOrderCreateDTO): ResponseEntity<OrderDTO> {

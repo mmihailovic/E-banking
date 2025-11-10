@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 
@@ -86,7 +87,7 @@ public class BankAccountServiceImpl implements BankAccountService {
                 bankAccountMapper.currentBankAccountCreateDTOtoCurrentBankAccount(currentBankAccountCreateDTO, creator));
         currentCurrencyBankAccount.setAccountNumber(generateBankAccountNumber(currentCurrencyBankAccount));
 
-        Long response = addAccountToClient(currentCurrencyBankAccount, currentBankAccountCreateDTO.JBMG());
+        Long response = addAccountToClient(currentCurrencyBankAccount, currentBankAccountCreateDTO.JMBG());
 
         if(response != null) {
             currentCurrencyBankAccount.setOwner(response);
@@ -100,6 +101,22 @@ public class BankAccountServiceImpl implements BankAccountService {
     @Override
     public List<BankAccountDTO> getAllBankAccountsForOwner(Long ownerId) {
         return bankAccountRepository.findAllByOwner(ownerId)
+                .stream()
+                .map(bankAccountMapper::bankAccountToBankAccountDTO)
+                .toList();
+    }
+
+    @Override
+    public List<BankAccountDTO> getAllBankAccountsWithSpecifiedCurrencyForOwner(Long ownerId, Long currencyId) {
+        return bankAccountRepository.findAllByOwnerAndCurrency_IdAndActiveIsTrue(ownerId, currencyId)
+                .stream()
+                .map(bankAccountMapper::bankAccountToBankAccountDTO)
+                .toList();
+    }
+
+    @Override
+    public List<BankAccountDTO> getAllBankAccounts() {
+        return bankAccountRepository.findAll()
                 .stream()
                 .map(bankAccountMapper::bankAccountToBankAccountDTO)
                 .toList();
@@ -244,13 +261,19 @@ public class BankAccountServiceImpl implements BankAccountService {
         Long bankAccountNumber = bankAccount.getAccountNumber();
 
         return userServiceRestTemplate.exchange("/clients/"+JMBG + "/account/" + bankAccountNumber,
-                HttpMethod.PUT, new HttpEntity<>(jwtUtil.extractToken()), Long.class).getBody();
+                HttpMethod.PUT, generateHeader(), Long.class).getBody();
     }
 
     private Long addAccountToCompany(BankAccount bankAccount, Integer TIN) {
         Long bankAccountNumber = bankAccount.getAccountNumber();
 
         return userServiceRestTemplate.exchange("/company/"+TIN + "/account/" + bankAccountNumber,
-                HttpMethod.PUT, new HttpEntity<>(jwtUtil.extractToken()), Long.class).getBody();
+                HttpMethod.PUT, generateHeader(), Long.class).getBody();
+    }
+
+    private HttpEntity<String> generateHeader() {
+        HttpHeaders authHeader = new HttpHeaders();
+        authHeader.set("Cookie", "AuthToken=" + jwtUtil.extractToken());
+        return new HttpEntity<>(authHeader);
     }
 }

@@ -39,7 +39,7 @@ public class JwtUtil {
     public Long getRealIDForLoggedUser() {
         String jwt = extractToken();
         Claims claims = extractAllClaims(jwt);
-        return (Long) claims.get("id");
+        return Long.valueOf((Integer)claims.get("id"));
     }
 
 

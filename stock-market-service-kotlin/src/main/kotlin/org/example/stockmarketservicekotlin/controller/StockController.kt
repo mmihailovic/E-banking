@@ -8,7 +8,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
 @RestController
-@RequestMapping("/kotlin/stocks")
+@RequestMapping("/stocks")
 class StockController(private val stockService: StockService) {
     @GetMapping("/{ticker}")
     fun getStockWithTicker(@PathVariable("ticker") ticker: String): ResponseEntity<StockDTO> {

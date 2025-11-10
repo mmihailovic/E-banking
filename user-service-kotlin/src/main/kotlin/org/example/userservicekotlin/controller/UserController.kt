@@ -12,7 +12,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
 @RestController
-@RequestMapping("/kotlin/user")
+@RequestMapping("/user")
 class UserController(val userService: UserService, val codeService: CodeService) {
     @PutMapping("/change-password")
     fun changePassword(@RequestBody changePasswordDTO: ChangePasswordDTO): ResponseEntity<*> {

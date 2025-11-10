@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
 @RestController
-@RequestMapping("/kotlin/credit-type")
+@RequestMapping("/credit-type")
 class CreditTypeController(private val creditTypeService: CreditTypeService) {
     @GetMapping
     fun getAllCreditTypes(): ResponseEntity<List<CreditTypeDTO>> {

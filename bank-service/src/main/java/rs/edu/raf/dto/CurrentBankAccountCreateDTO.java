@@ -6,7 +6,7 @@ import jakarta.validation.constraints.PositiveOrZero;
 import java.math.BigDecimal;
 
 public record CurrentBankAccountCreateDTO (
-        @NotNull String JBMG,
+        @NotNull String JMBG,
         @NotNull String accountType,
         @PositiveOrZero BigDecimal maintenancePrice
 ) { }

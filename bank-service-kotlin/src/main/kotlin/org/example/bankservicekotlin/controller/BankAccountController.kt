@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*
 import java.math.BigDecimal
 
 @RestController
-@RequestMapping("/kotlin/bank-accounts")
+@RequestMapping("/bank-accounts")
 
 class BankAccountController(
     private val bankAccountService: BankAccountService,

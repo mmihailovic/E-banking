@@ -58,10 +58,23 @@ public class BankAccountController {
         return new ResponseEntity<>(bankAccountService.getAllBankAccountsForOwner(id), HttpStatus.OK);
     }
 
+    @ApiOperation(value = "Get bank accounts with specified currency for logged client")
+    @GetMapping("/client/currency/{currency}")
+    public ResponseEntity<List<BankAccountDTO>> getBankAccountsWithCurrencyForLoggedClient(
+            @Parameter(name = "Currency ID") @PathVariable("currency") Long id){
+        return new ResponseEntity<>(bankAccountService.getAllBankAccountsWithSpecifiedCurrencyForOwner(jwtUtil.getIDForLoggedUser(), id), HttpStatus.OK);
+    }
+
     @ApiOperation(value = "Get all bank account for logged client")
     @GetMapping("/client")
     public ResponseEntity<List<BankAccountDTO>> getAllBankAccountsForLoggedClient(){
         return new ResponseEntity<>(bankAccountService.getAllBankAccountsForOwner(jwtUtil.getIDForLoggedUser()), HttpStatus.OK);
+    }
+
+    @ApiOperation(value = "Get all bank accounts")
+    @GetMapping
+    public ResponseEntity<List<BankAccountDTO>> getAllBankAccounts(){
+        return new ResponseEntity<>(bankAccountService.getAllBankAccounts(), HttpStatus.OK);
     }
 
     @ApiOperation(value = "Get bank account with ID")

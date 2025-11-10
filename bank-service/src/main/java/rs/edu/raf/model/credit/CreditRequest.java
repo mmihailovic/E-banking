@@ -5,7 +5,6 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import rs.edu.raf.model.Currency;
 import rs.edu.raf.model.accounts.BankAccount;
 
 import java.math.BigDecimal;
@@ -24,8 +23,6 @@ public class CreditRequest {
     @ManyToOne
     private CreditType creditType;
     private BigDecimal loanAmount;
-    @ManyToOne
-    private Currency currency;
     private String loanPurpose;
     private BigDecimal salary;
     private String phoneNumber;

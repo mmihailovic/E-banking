@@ -6,7 +6,7 @@ import java.math.BigDecimal
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-class BankAccount(
+open class BankAccount(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long?,
     @Column(unique = true)

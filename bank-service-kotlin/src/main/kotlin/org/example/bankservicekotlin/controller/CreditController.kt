@@ -11,7 +11,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
 @RestController
-@RequestMapping("/kotlin/credit")
+@RequestMapping("/credit")
 class CreditController(
     private val creditService: CreditService, private val jwtUtil: JwtUtil
 ) {

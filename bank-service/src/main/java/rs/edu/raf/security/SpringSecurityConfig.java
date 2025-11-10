@@ -51,7 +51,7 @@ public class SpringSecurityConfig implements WebSecurityCustomizer {
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                                 .requestMatchers("/swagger-ui/**", "/api-docs/**", "/swagger-resources/**",
                                         "/exchange", "/bank-accounts/deduct-available-balance/**").permitAll()
-                        .requestMatchers("/bank-accounts/client", "/cards/client", "/credit/requests/*").hasAuthority("ROLE_CLIENT")
+                        .requestMatchers("/bank-accounts/client", "/cards/client", "/credit/requests/*", "/bank-accounts/client/**").hasAuthority("ROLE_CLIENT")
                         .requestMatchers(HttpMethod.GET, "/country", "/currency",
                                 "/card-issuer", "/credit/*", "/credit-type", "/bank-accounts/account/**", "/bank-accounts/account/number/**").authenticated()
                         .requestMatchers("/credit/apply").authenticated()

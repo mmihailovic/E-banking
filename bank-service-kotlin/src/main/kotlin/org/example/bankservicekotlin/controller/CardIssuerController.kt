@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
 @RestController
-@RequestMapping("/kotlin/card-issuer")
+@RequestMapping("/card-issuer")
 class CardIssuerController(private val cardIssuerService: CardIssuerService) {
     @GetMapping
     fun getAllCardIssuers(): ResponseEntity<List<CardIssuerDTO>> {

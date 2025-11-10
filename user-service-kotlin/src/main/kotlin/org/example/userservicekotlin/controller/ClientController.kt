@@ -12,7 +12,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
 @RestController
-@RequestMapping("/kotlin/clients")
+@RequestMapping("/clients")
 class ClientController(val clientService: ClientService, val jwtUtil: JwtUtil) {
     @PostMapping("/add")
     fun createClient(@RequestBody clientCreateDTO: @Valid ClientCreateDTO): ResponseEntity<ClientDTO> {

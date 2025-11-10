@@ -1,11 +1,9 @@
 package rs.edu.raf.model.credit;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import rs.edu.raf.model.Currency;
 
 import java.math.BigDecimal;
 
@@ -22,4 +20,6 @@ public class CreditType {
     private int maxLoanTerm;
     private BigDecimal maxLoanAmount;
     private BigDecimal prepayment;
+    @ManyToOne
+    private Currency currency;
 }

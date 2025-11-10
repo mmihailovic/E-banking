@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/kotlin/exchange")
+@RequestMapping("/exchange")
 class ExchangeController(
     private val exchangeRateService: ExchangeRateService,
     private val exchangeInvoiceService: ExchangeInvoiceService

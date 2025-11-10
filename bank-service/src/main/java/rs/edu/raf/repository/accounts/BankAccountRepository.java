@@ -14,4 +14,5 @@ public interface BankAccountRepository extends JpaRepository<BankAccount,Long> {
     Optional<BankAccount> findByIdAndActiveIsTrue(Long id);
     Optional<BankAccount> findByAccountNumberAndActiveIsTrue(Long accountNumber);
     Optional<BankAccount> findByOwnerAndCurrency_Code(Long owner, String currencyCode);
+    List<BankAccount> findAllByOwnerAndCurrency_IdAndActiveIsTrue(Long owner, Long currencyId);
 }

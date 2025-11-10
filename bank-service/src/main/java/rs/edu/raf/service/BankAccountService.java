@@ -46,6 +46,22 @@ public interface BankAccountService {
     List<BankAccountDTO> getAllBankAccountsForOwner(Long ownerId);
 
     /**
+     * Lists accounts with specified currency of a single user based on the user's ID.
+     *
+     * @param ownerId The ID of the user.
+     * @param currencyId The ID of the currency
+     * @return A list of {@link BankAccountDTO} objects representing the accounts with
+     * the specified currency belonging to the user.
+     */
+    List<BankAccountDTO> getAllBankAccountsWithSpecifiedCurrencyForOwner(Long ownerId, Long currencyId);
+
+    /**
+     * Retrieves all bank accounts
+     * @return List of {@link BankAccountDTO} objects representing bank accountss
+     */
+    List<BankAccountDTO> getAllBankAccounts();
+
+    /**
      * Finds an active account by its ID.
      *
      * @param id The ID of the account to find.

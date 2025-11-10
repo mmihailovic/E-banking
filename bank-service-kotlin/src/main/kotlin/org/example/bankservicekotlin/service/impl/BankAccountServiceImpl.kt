@@ -275,7 +275,7 @@ class BankAccountServiceImpl(
         val bankAccountNumber: Long = bankAccount.accountNumber!!
 
         return userServiceRestTemplate.exchange(
-            "/kotlin/clients/$JMBG/account/$bankAccountNumber",
+            "/clients/$JMBG/account/$bankAccountNumber",
             HttpMethod.PUT, generateHeader(), Long::class.java
         ).body
     }
@@ -284,7 +284,7 @@ class BankAccountServiceImpl(
         val bankAccountNumber: Long = bankAccount.accountNumber!!
 
         return userServiceRestTemplate.exchange(
-            "/kotlin/company/$TIN/account/$bankAccountNumber",
+            "/company/$TIN/account/$bankAccountNumber",
             HttpMethod.PUT, generateHeader(), Long::class.java
         ).body
     }

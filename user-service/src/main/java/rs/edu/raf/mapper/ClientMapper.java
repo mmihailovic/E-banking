@@ -10,6 +10,7 @@ import rs.edu.raf.dto.ClientRegisterDTO;
 import rs.edu.raf.exceptions.UserNotFoundException;
 import rs.edu.raf.model.user.Client;
 import rs.edu.raf.repository.ClientRepository;
+import rs.edu.raf.repository.RoleRepository;
 
 import java.util.Optional;
 
@@ -18,6 +19,7 @@ import java.util.Optional;
 public class ClientMapper {
     private ClientRepository clientRepository;
     private BCryptPasswordEncoder bCryptPasswordEncoder;
+    private RoleRepository roleRepository;
 
     public Client clientCreateDTOtoClient(ClientCreateDTO clientCreateDTO) {
         Client client = new Client();
@@ -31,6 +33,7 @@ public class ClientMapper {
         client.setPhoneNumber(clientCreateDTO.phoneNumber());
         client.setAddress(clientCreateDTO.address());
         client.setActive(clientCreateDTO.active());
+        client.getRoles().add(roleRepository.findByName("ROLE_CLIENT").get());
 
         return client;
     }

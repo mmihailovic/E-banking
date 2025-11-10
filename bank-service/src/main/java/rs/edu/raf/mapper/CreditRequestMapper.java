@@ -25,7 +25,6 @@ public class CreditRequestMapper {
 
         creditRequest.setCreditType(creditType);
         creditRequest.setLoanAmount(creditRequestCreateDto.amount());
-        creditRequest.setCurrency(currencyRepository.findById(creditRequestCreateDto.currencyId()).orElseThrow());
         creditRequest.setSalary(creditRequestCreateDto.salary());
         creditRequest.setLoanPurpose(creditRequestCreateDto.loanPurpose());
         creditRequest.setPhoneNumber(creditRequestCreateDto.phoneNumber());
@@ -40,10 +39,10 @@ public class CreditRequestMapper {
 
     public CreditRequestDTO creditRequestToCreditRequestDto(CreditRequest creditRequest){
         return new CreditRequestDTO(creditRequest.getId(), creditTypeMapper.creditTypeToCreditTypeDTO(creditRequest.getCreditType()),
-                creditRequest.getLoanAmount(), currencyMapper.currencyToCurrencyDTO(creditRequest.getCurrency()),
-                creditRequest.getLoanPurpose(), creditRequest.getSalary(), creditRequest.getPhoneNumber(),
-                creditRequest.isPermanentEmployee(), creditRequest.getCurrentEmploymentPeriod(),
-                creditRequest.getLoanTerm(), bankAccountMapper.bankAccountToBankAccountDTO(creditRequest.getBankAccount()),
+                creditRequest.getLoanAmount(), creditRequest.getLoanPurpose(), creditRequest.getSalary(),
+                creditRequest.getPhoneNumber(), creditRequest.isPermanentEmployee(),
+                creditRequest.getCurrentEmploymentPeriod(), creditRequest.getLoanTerm(),
+                bankAccountMapper.bankAccountToBankAccountDTO(creditRequest.getBankAccount()),
                 creditRequest.getCreditRequestStatus().toString());
     }
 }

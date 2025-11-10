@@ -45,7 +45,7 @@ public class SpringSecurityConfig implements WebSecurityCustomizer {
                 .authorizeRequests(authorize -> authorize
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .requestMatchers("/swagger-ui/**", "/api-docs/**", "/swagger-resources/**",
-                                "/user/login", "/users/logout", "/user/generate/**", "/clients/register", "/user/reset-password",
+                                "/user/login", "/user/logout", "/user/generate/**", "/clients/register", "/user/reset-password",
                                 "/user/*/code/*").permitAll()
                         .requestMatchers("/clients/*/account/*", "/company/*/account/*").hasAuthority("ROLE_MANAGE_BANK_ACCOUNTS")
                         .requestMatchers("/clients/**", "/clients", "/clients/add", "/clients/email/**",
